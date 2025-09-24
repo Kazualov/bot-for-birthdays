@@ -1,5 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+
 from config import TOKEN
 # from handlers import start, tasks
 import commands 
@@ -7,7 +9,7 @@ import commands
 
 async def main():
     # Создаем экземпляры
-    bot = Bot(token=TOKEN)
+    bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode='MARKDOWN'))
     dp = Dispatcher()
 
     # Регистрируем хендлеры
