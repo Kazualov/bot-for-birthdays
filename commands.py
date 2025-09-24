@@ -92,7 +92,9 @@ async def task1(message: Message, state: FSMContext):
             "Теперь тащи свое тело как можно выше к небесам.\n"
             "Второе испытание:\n"
             "Я сыграл мелодию на небесной арфе. Каждая нота соответствует букве на клавиатуре.\n"
-            "Собери порядок букв и получи слово. Введи его."
+            "Собери порядок букв и получи слово. Введи его.\n\n"
+            "Это может тебе помочь.\nhttps://specy.github.io/genshinMusic"
+
         )
         voice = FSInputFile("arpha.ogg")
         await message.answer_voice(voice)
@@ -140,7 +142,7 @@ async def task4(message: Message, state: FSMContext):
             "Заключительное испытание:\n"
             
         )
-        photo = FSInputFile("integral.jpg")  # путь к картинке
+        photo = FSInputFile("integral.png")  # путь к картинке
         await message.answer_photo(photo, caption = "Сиди решай, может, хоть чему то научишься. Ответом должно быть число.\n")
         await state.set_state(Quest.task5)
     else:
