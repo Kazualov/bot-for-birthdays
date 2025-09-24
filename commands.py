@@ -12,10 +12,9 @@ bulshit = ["ой какая ты глупая", "ты вообще умеешь 
 
 
 import asyncio
-from aiogram.types import ChatActions
 
 async def send_with_typing(message, text: str, delay: float = 2.0):
-    await message.bot.send_chat_action(message.chat.id, ChatActions.TYPING)
+    await message.bot.send_chat_action(message.chat.id, action = "typing")
     await asyncio.sleep(delay)
     await message.answer(text)
 
@@ -34,7 +33,7 @@ class Quest(StatesGroup):
 
 @router.message(CommandStart())
 async def cmd_start(message: Message, state=FSMContext):
-    await message.answer("""…Наконец-то.  
+    await send_with_typing(message, """…Наконец-то.  
 Ты догадалась открыть эту жалкую коробку и пришла сюда.  
 Неужели ты думала, что твой праздник пройдёт спокойно?  
 Я подготовил испытания — и если сможешь пройти их, тогда, может быть… я признаю твою сообразительность.  
@@ -60,7 +59,7 @@ async def taskE(message: Message, state: FSMContext):
 01010011 01001011 01010010 01001101 01000011 01001000
 Расшифруй моё имя, чтобы узнать ключ."""
     if message.text.strip().lower() == "flag<task0_flag>":
-        await send_with_typing(text)
+        await send_with_typing(message, text)
         await state.set_state(Quest.task0)
     else:
         await send_with_typing(bulshit[randint(0, len(bulshit)-1)])
@@ -71,7 +70,7 @@ async def taskE(message: Message, state: FSMContext):
 @router.message(Quest.task0)
 async def task0(message: Message, state: FSMContext):
     if message.text.strip().lower() == "flag<scrmch>":
-        await message.answer(
+        await send_with_typing(message, 
             "Хм. Так ты всё же догадалась… Ты действительно рассекретила меня. И это только начало.\n"
             "Один из моих слуг ждет тебя в библиотеке. не таких как ты, разумеется\n"
             "И вот тебе Первое испытание:\n"
@@ -80,7 +79,7 @@ async def task0(message: Message, state: FSMContext):
         )
         await state.set_state(Quest.task1)
     else:
-        await send_with_typing("Это даже жалко. Попробуй ещё раз.")
+        await send_with_typing(message, bulshit[randint(0, len(bulshit)-1)])
 
 
 # ---- TASK 1 ----
@@ -88,7 +87,7 @@ async def task0(message: Message, state: FSMContext):
 async def task1(message: Message, state: FSMContext):
     # ожидаемый ответ (например «HAPPYBIRTHDAY»)
     if message.text.strip().lower() == "flag<happybirthday>":
-        await send_with_typing(
+        await send_with_typing(message, 
             "Вижу, что базовые шифры для тебя не проблема. Но не обольщайся.\n\n"
             "Теперь тащи свое тело как можно выше к небесам.\n"
             "Второе испытание:\n"
@@ -99,14 +98,14 @@ async def task1(message: Message, state: FSMContext):
         await message.answer_voice(voice)
         await state.set_state(Quest.task2)
     else:
-        await send_with_typing("Неверно. Ты уверена, что правильно поняла ключ?")
+        await send_with_typing(message, "Неверно. Ты уверена, что правильно поняла ключ?")
 
 
 # ---- TASK 2 ----
 @router.message(Quest.task2)
 async def task2(message: Message, state: FSMContext):
     if message.text.strip().lower() == "flag<trash>":
-        await send_with_typing(
+        await send_with_typing(message, 
             "Так-так… у тебя получается быстрее, чем я ожидал.\n\n"
             "Как говорится, чем выше заберешься, тем дольше падать. Пора отрпавляться под землю.\n"
             "Третье испытание:\n"
@@ -114,14 +113,14 @@ async def task2(message: Message, state: FSMContext):
         )
         await state.set_state(Quest.task3)
     else:
-        await send_with_typing(bulshit[randint(0, len(bulshit)-1)])
+        await send_with_typing(message, bulshit[randint(0, len(bulshit)-1)])
 
 
 # ---- TASK 3 ----
 @router.message(Quest.task3)
 async def task3(message: Message, state: FSMContext):
     if message.text.strip().lower() == "flag<jopa>":
-        await send_with_typing(
+        await send_with_typing(message, 
             "Верно. Ты начинаешь узнавать Тейват не хуже меня.\n\n"
             "Теперь иди туда, где варят бодрящие зелья. Заведение, что за сторожевой башней\n"
             "Четвёртое испытание:\n"
@@ -129,14 +128,14 @@ async def task3(message: Message, state: FSMContext):
         )
         await state.set_state(Quest.task4)
     else:
-        await send_with_typing("Ха. Разуй глаза." + bulshit[randint(0, len(bulshit)-1)])
+        await send_with_typing(message, "Ха. Разуй глаза." + bulshit[randint(0, len(bulshit)-1)])
 
 
 # ---- TASK 4 ----
 @router.message(Quest.task4)
 async def task4(message: Message, state: FSMContext):
     if message.text.strip().lower() == "flag<каноэ>":
-        await send_with_typing(
+        await send_with_typing(message, 
             "Ты и здесь справилась… Последний шаг — и мы закончим это представление.\n\n"
             "Заключительное испытание:\n"
             
@@ -145,7 +144,7 @@ async def task4(message: Message, state: FSMContext):
         await message.answer_photo(photo, caption = "Сиди решай, может, хоть чему то научишься. Ответом должно быть число.\n")
         await state.set_state(Quest.task5)
     else:
-        await send_with_typing(bulshit[randint(0, len(bulshit)-1)])
+        await send_with_typing(message, bulshit[randint(0, len(bulshit)-1)])
 
 
 # ---- TASK 5 ----
@@ -161,7 +160,7 @@ async def task5(message: Message, state: FSMContext):
         # )
         await state.set_state(Quest.finish)
     else:
-        await send_with_typing("Ха! Даже с математикой справиться не можешь?" + bulshit[randint(0, len(bulshit)-1)])
+        await send_with_typing(message, "Ха! Даже с математикой справиться не можешь?" + bulshit[randint(0, len(bulshit)-1)])
 
 
 # ---- FINISH ----
